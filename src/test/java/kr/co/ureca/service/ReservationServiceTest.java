@@ -97,7 +97,9 @@ public class ReservationServiceTest {
     void ifReservedSeatThrowException() {
         //given
         Seat reservedSeat = Seat.builder().seatNo(1L).status(true).build();  // 이미 예약된 좌석
+        User user = User.builder().userId(1L).hasReservation(false).build();
         when(mockSeatRepository.findBySeatNo(1L)).thenReturn(Optional.of(reservedSeat));
+        when(mockUserRepository.findById(1L)).thenReturn(Optional.of(user));
 
         //when
         CustomException exception = assertThrows(CustomException.class, () -> reservationService.reserve(1L,1L));
@@ -130,20 +132,14 @@ public class ReservationServiceTest {
     @DisplayName("삭제 성공")
     void deleteReservationSuccess() {
         // Given
-        DeleteReservationRequest request = new DeleteReservationRequest("userName", "1111", "userNickname", 1L);
-        User user = User.builder()
-                .userId(1L)
-                .nickname("userNickname")
-                .userName("userName")
-                .hasReservation(true)
-                .password("1111")
-                .build();
+        User user = User.builder().userId(1L).nickname("userNickname").userName("userName").hasReservation(true).build();
         Seat seat = Seat.builder().seatNo(1L).user(user).status(true).build();
 
         when(mockSeatRepository.findBySeatNo(eq(1L))).thenReturn(Optional.of(seat));
+        when(mockUserRepository.findById(1L)).thenReturn(Optional.of(user));
 
         // When
-        Seat deletedSeat = reservationService.deleteReservation(request);
+        Seat deletedSeat = reservationService.deleteReservation(1L,1L);
 
         // Then
         verify(mockUserRepository).save(userCaptor.capture());
