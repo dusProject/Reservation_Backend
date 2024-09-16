@@ -100,18 +100,14 @@ public class ReservationService {
     }
 
     @Transactional
-    public Seat deleteReservation(DeleteReservationRequest deleteReservationRequest){
-        Seat seat = seatRepository.findBySeatNo(deleteReservationRequest.seatNo())
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 좌석입니다. 좌석번호: " + deleteReservationRequest.seatNo()));
-        User user = seat.getUser();
-        String nickName = deleteReservationRequest.nickname();
-        String userName = deleteReservationRequest.userName();
-        String password = deleteReservationRequest.password();
+    public Seat deleteReservation(Long seatNo,Long userId){
+        Seat seat = seatRepository.findBySeatNo(seatNo)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 좌석입니다. 좌석번호: " + seatNo));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, HttpStatus.BAD_REQUEST));
 
         if(seat.getStatus().equals(true)) {
-            if (user.getNickname().equals(nickName)
-                    && user.getUserName().equals(userName)
-                    && user.getPassword().equals(password)) {
+            if (seat.getUser().equals(user)) {
                 seat = seat.toBuilder()
                         .user(null)
                         .status(false)
@@ -126,7 +122,7 @@ public class ReservationService {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_USER, HttpStatus.BAD_REQUEST);
             }
         }else{
-            throw new CustomException(ErrorCode.UNVALID_DELETE_REQUEST, HttpStatus.BAD_REQUEST);
+            throw new CustomException(ErrorCode.RESERVED_SEAT, HttpStatus.BAD_REQUEST);
         }
 
         return seat;
