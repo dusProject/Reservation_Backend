@@ -23,7 +23,7 @@
 <tr>
 <td>
 <div class="infoBox" id="tests">
-<div class="counter">5</div>
+<div class="counter">1</div>
 <p>tests</p>
 </div>
 </td>
@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.080s</div>
+<div class="counter">0.027s</div>
 <p>duration</p>
 </div>
 </td>
@@ -79,33 +79,9 @@
 </tr>
 </thead>
 <tr>
-<td class="success">삭제 성공</td>
-<td class="success">deleteReservationSuccess()</td>
-<td class="success">0.011s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">이미 예약된 좌석은 예약 불가</td>
-<td class="success">ifReservedSeatThrowException()</td>
-<td class="success">0.004s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">이미 예약한 사용자는 예약 불가</td>
-<td class="success">ifReservedUserThrowException()</td>
-<td class="success">0.007s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">initSeats()</td>
-<td class="success">initSeats()</td>
-<td class="success">0.054s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">예약 성공</td>
-<td class="success">reserve()</td>
-<td class="success">0.004s</td>
+<td class="success">나의 예약에서 예약 정보가 없을시 null 반환</td>
+<td class="success">getMyReservation()</td>
+<td class="success">0.027s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -113,8 +89,8 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>19:25:19.898 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [kr.co.ureca.service.ReservationServiceTest]: ReservationServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-19:25:19.934 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration kr.co.ureca.MiniProjectBeApplication for test class kr.co.ureca.service.ReservationServiceTest
+<pre>21:47:51.833 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [kr.co.ureca.service.ReservationServiceTest]: ReservationServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+21:47:51.871 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration kr.co.ureca.MiniProjectBeApplication for test class kr.co.ureca.service.ReservationServiceTest
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -124,49 +100,290 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.2.9)
 
-2024-09-16T19:25:20.060+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] k.c.u.service.ReservationServiceTest     : Starting ReservationServiceTest using Java 17.0.12 with PID 34752 (started by dlrkdus in /Users/dlrkdus/Documents/GitHub/Reservation_Backend)
-2024-09-16T19:25:20.060+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] k.c.u.service.ReservationServiceTest     : No active profile set, falling back to 1 default profile: &quot;default&quot;
-2024-09-16T19:25:20.415+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2024-09-16T19:25:20.416+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
-2024-09-16T19:25:20.426+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface kr.co.ureca.repository.SeatRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
-2024-09-16T19:25:20.426+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface kr.co.ureca.repository.UserRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
-2024-09-16T19:25:20.427+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 0 JDBC repository interfaces.
-2024-09-16T19:25:20.430+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2024-09-16T19:25:20.431+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-09-16T19:25:20.503+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 71 ms. Found 2 JPA repository interfaces.
-2024-09-16T19:25:20.509+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2024-09-16T19:25:20.510+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2024-09-16T19:25:20.515+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.ureca.repository.SeatRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2024-09-16T19:25:20.515+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.ureca.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2024-09-16T19:25:20.515+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 1 ms. Found 0 Redis repository interfaces.
-2024-09-16T19:25:20.733+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-09-16T19:25:20.751+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.10.Final
-2024-09-16T19:25:20.762+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2024-09-16T19:25:20.830+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-09-16T19:25:20.839+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2024-09-16T19:25:20.983+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6d035815
-2024-09-16T19:25:20.984+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2024-09-16T19:25:21.331+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-09-16T19:25:21.368+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-09-16T19:25:21.593+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] org.redisson.Version                     : Redisson 3.18.0
-2024-09-16T19:25:21.599+09:00  WARN 34752 --- [Mini-Project_BE] [    Test worker] i.n.r.d.DnsServerAddressStreamProviders  : Can not find io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider in the classpath, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'
-2024-09-16T19:25:21.653+09:00  INFO 34752 --- [Mini-Project_BE] [isson-netty-2-6] o.r.c.pool.MasterPubSubConnectionPool    : 1 connections initialized for localhost/127.0.0.1:6379
-2024-09-16T19:25:21.680+09:00  INFO 34752 --- [Mini-Project_BE] [sson-netty-2-20] o.r.c.pool.MasterConnectionPool          : 24 connections initialized for localhost/127.0.0.1:6379
+2024-09-23T21:47:51.996+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] k.c.u.service.ReservationServiceTest     : Starting ReservationServiceTest using Java 17.0.12 with PID 67521 (started by dlrkdus in /Users/dlrkdus/Documents/GitHub/Reservation_Backend)
+2024-09-23T21:47:51.997+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] k.c.u.service.ReservationServiceTest     : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2024-09-23T21:47:52.351+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2024-09-23T21:47:52.351+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-09-23T21:47:52.364+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface kr.co.ureca.repository.SeatRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-09-23T21:47:52.364+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface kr.co.ureca.repository.UserRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2024-09-23T21:47:52.364+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11 ms. Found 0 JDBC repository interfaces.
+2024-09-23T21:47:52.369+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2024-09-23T21:47:52.369+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-09-23T21:47:52.445+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 74 ms. Found 2 JPA repository interfaces.
+2024-09-23T21:47:52.450+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2024-09-23T21:47:52.451+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2024-09-23T21:47:52.455+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.ureca.repository.SeatRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-09-23T21:47:52.455+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.ureca.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-09-23T21:47:52.455+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 1 ms. Found 0 Redis repository interfaces.
+2024-09-23T21:47:52.677+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-09-23T21:47:52.696+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.10.Final
+2024-09-23T21:47:52.708+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-09-23T21:47:52.777+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-09-23T21:47:52.785+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-09-23T21:47:52.893+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c5044fa
+2024-09-23T21:47:52.894+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-09-23T21:47:53.205+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table seat 
+       drop 
+       foreign key FKe6phj7o3jw3cwn0egv9i4v3ma
+Hibernate: 
+    drop table if exists seat
+Hibernate: 
+    drop table if exists user
+Hibernate: 
+    create table seat (
+        status bit,
+        seat_id bigint not null auto_increment,
+        seat_no bigint,
+        user_id bigint,
+        primary key (seat_id)
+    ) engine=InnoDB
+Hibernate: 
+    create table user (
+        has_reservation bit,
+        user_id bigint not null auto_increment,
+        nickname varchar(255),
+        password varchar(255),
+        user_name varchar(255),
+        primary key (user_id)
+    ) engine=InnoDB
+Hibernate: 
+    alter table seat 
+       add constraint UK_spqt2dd33urk1ekgy26631j5m unique (user_id)
+Hibernate: 
+    alter table user 
+       add constraint UK_n4swgcf30j6bmtb4l4cjryuym unique (nickname)
+Hibernate: 
+    alter table seat 
+       add constraint FKe6phj7o3jw3cwn0egv9i4v3ma 
+       foreign key (user_id) 
+       references user (user_id)
+2024-09-23T21:47:53.262+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-09-23T21:47:53.459+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] org.redisson.Version                     : Redisson 3.18.0
+2024-09-23T21:47:53.465+09:00  WARN 67521 --- [Mini-Project_BE] [    Test worker] i.n.r.d.DnsServerAddressStreamProviders  : Can not find io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider in the classpath, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'
+2024-09-23T21:47:53.525+09:00  INFO 67521 --- [Mini-Project_BE] [isson-netty-2-6] o.r.c.pool.MasterPubSubConnectionPool    : 1 connections initialized for localhost/127.0.0.1:6379
+2024-09-23T21:47:53.547+09:00  INFO 67521 --- [Mini-Project_BE] [sson-netty-2-20] o.r.c.pool.MasterConnectionPool          : 24 connections initialized for localhost/127.0.0.1:6379
 Hibernate: 
     select
         count(*) 
     from
         seat s1_0
-2024-09-16T19:25:21.817+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] kr.co.ureca.service.ReservationService   : 좌석을 생성했습니다.
-2024-09-16T19:25:21.917+09:00  WARN 34752 --- [Mini-Project_BE] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2024-09-16T19:25:22.080+09:00  WARN 34752 --- [Mini-Project_BE] [    Test worker] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
-2024-09-16T19:25:22.332+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
-2024-09-16T19:25:22.362+09:00  INFO 34752 --- [Mini-Project_BE] [    Test worker] k.c.u.service.ReservationServiceTest     : Started ReservationServiceTest in 2.388 seconds (process running for 2.762)
 Hibernate: 
-    select
-        count(*) 
-    from
-        seat s1_0
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        seat
+        (seat_no, status, user_id) 
+    values
+        (?, ?, ?)
+2024-09-23T21:47:53.733+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] kr.co.ureca.service.ReservationService   : 좌석을 생성했습니다.
+2024-09-23T21:47:53.832+09:00  WARN 67521 --- [Mini-Project_BE] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-09-23T21:47:53.985+09:00  WARN 67521 --- [Mini-Project_BE] [    Test worker] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2024-09-23T21:47:54.239+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2024-09-23T21:47:54.270+09:00  INFO 67521 --- [Mini-Project_BE] [    Test worker] k.c.u.service.ReservationServiceTest     : Started ReservationServiceTest in 2.358 seconds (process running for 2.729)
 </pre>
 </span>
 </div>
@@ -178,7 +395,7 @@ Hibernate:
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 8.8</a> at 2024. 9. 16. 오후 7:25:22</p>
+<a href="http://www.gradle.org">Gradle 8.8</a> at 2024. 9. 23. 오후 9:47:54</p>
 </div>
 </div>
 </body>

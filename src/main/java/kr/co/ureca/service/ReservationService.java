@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import kr.co.ureca.config.RedissonConfig;
 import kr.co.ureca.dto.DeleteReservationRequest;
 import kr.co.ureca.dto.ReservationRequest;
+import kr.co.ureca.dto.SeatResponse;
 import kr.co.ureca.entity.Seat;
 import kr.co.ureca.entity.User;
 import kr.co.ureca.exception.CustomException;
@@ -21,6 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -49,6 +53,27 @@ public class ReservationService {
         log.info("좌석을 생성했습니다.");
     }
 
+    public List<SeatResponse> getAllSeats(){
+        ArrayList<SeatResponse> seatResponses = new ArrayList<>();
+        List<Seat> seatList = seatRepository.findAll();
+        for (Seat seat:seatList){
+            SeatResponse seatResponse = SeatResponse.builder()
+                    .seatNo(seat.getSeatNo())
+                    .status(seat.getStatus())
+                    .userName(seat.getUser().getUserName())
+                    .build();
+            seatResponses.add(seatResponse);
+        }
+        return seatResponses;
+    }
+
+    public Long getMyReservation(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException(ErrorCode.USER_NOT_FOUND));
+        return seatRepository.findSeatByUser(user)
+                .map(Seat::getSeatNo)
+                .orElse(null);
+    }
 
     @Transactional
     public Seat reserve(Long seatNo,Long userId){
