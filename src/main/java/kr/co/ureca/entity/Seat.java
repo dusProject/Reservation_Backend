@@ -29,4 +29,14 @@ public class Seat {
 
     private Long seatNo;
 
+    public void reserveSeat(User user) {
+        this.user = user;
+        this.status = true;
+    }
+
+    public void cancelSeatReservation() {
+        this.user = null;
+        this.status = false;
+    }
+
 }

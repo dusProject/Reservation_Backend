@@ -28,17 +28,13 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class ReservationService {
 
-    @Autowired
-    private SeatRepository seatRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RedissonClient redissonClient;
+    private final SeatRepository seatRepository;
+    private final UserRepository userRepository;
+    private final RedissonClient redissonClient;
 
     @PostConstruct
     public void initSeats() {
@@ -93,22 +89,16 @@ public class ReservationService {
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, HttpStatus.BAD_REQUEST));
 
-            if (seat.getStatus().equals(true)) {
+            if (seat.getStatus()) {
                 throw new CustomException(ErrorCode.RESERVED_SEAT, HttpStatus.BAD_REQUEST);
             }
 
-            if (user.getHasReservation().equals(true)) {
+            if (user.getHasReservation()) {
                 throw new CustomException(ErrorCode.RESERVED_USER, HttpStatus.BAD_REQUEST);
             }
 
-            user = user.toBuilder()
-                    .hasReservation(true)
-                    .build();
-
-            seat = seat.toBuilder()
-                    .user(user)
-                    .status(true)
-                    .build();
+            user.reserveUser();
+            seat.reserveSeat(user);
 
             userRepository.save(user);
             seatRepository.save(seat);
@@ -133,13 +123,8 @@ public class ReservationService {
 
         if(seat.getStatus().equals(true)) {
             if (seat.getUser().equals(user)) {
-                seat = seat.toBuilder()
-                        .user(null)
-                        .status(false)
-                        .build();
-                user = user.toBuilder()
-                        .hasReservation(false)
-                        .build();
+                seat.cancelSeatReservation();
+                user.cancelUserReservation();
 
                 seatRepository.save(seat);
                 userRepository.save(user);

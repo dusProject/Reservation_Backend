@@ -29,4 +29,12 @@ public class User {
     @Builder.Default
     private Boolean hasReservation = false;
 
+    public void reserveUser() {
+        this.hasReservation = true;
+    }
+
+    public void cancelUserReservation() {
+        this.hasReservation = false;
+    }
+
 }
