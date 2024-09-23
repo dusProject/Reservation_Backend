@@ -13,7 +13,9 @@ public enum ErrorCode implements EnumModel{
     RESERVED_USER(40901,"CF002","이미 예약한 좌석이 존재합니다. 기존 예약을 취소해주세요."),
     UNAUTHORIZED_USER(40300,"A001","예약자 정보와 일치하지 않습니다."),
     USER_NOT_FOUND(40301,"A002","가입되지 않은 사용자입니다."),
-    UNVALID_DELETE_REQUEST(40000,"B001","예약된 좌석이 아닙니다.");
+    UNVALID_DELETE_REQUEST(40000,"B001","예약된 좌석이 아닙니다."),
+    //Server
+    SERVER_ERROR(50000,"S001","서버 오류입니다.");
     private int status;
     private String code;
     private String message;

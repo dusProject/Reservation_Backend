@@ -48,9 +48,9 @@ public class ReservationController {
             @ApiResponse(responseCode = "400", description = "예약 취소 실패")
     })
     @DeleteMapping("/ureca/myReservation")
-    public ResponseEntity<Seat> deleteReservation(Long seatNo,Long userId){
-        Seat deletedSeatReservation = reservationService.deleteReservation(seatNo,userId);
-        return new ResponseEntity<>(deletedSeatReservation, HttpStatus.OK);
+    public ResponseEntity<Void> deleteReservation(Long seatNo,Long userId){
+        reservationService.deleteReservation(seatNo,userId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "홈 화면", responses = {

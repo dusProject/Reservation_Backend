@@ -14,6 +14,7 @@ import kr.co.ureca.exception.CustomException;
 import kr.co.ureca.exception.ErrorCode;
 import kr.co.ureca.repository.SeatRepository;
 import kr.co.ureca.repository.UserRepository;
+import kr.co.ureca.websocket.ReservationWebSocketHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +37,7 @@ public class ReservationService {
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
     private final RedissonClient redissonClient;
+    private final ReservationWebSocketHandler reservationWebSocketHandler;
 
     @PostConstruct
     public void initSeats() {
@@ -72,7 +75,7 @@ public class ReservationService {
     }
 
     @Transactional
-    public Seat reserve(Long seatNo,Long userId){
+    public Seat reserve(Long seatNo,Long userId) {
         //좌석 번호를 기준으로 락 설정
         RLock lock = redissonClient.getLock("seatLock:" + seatNo);
 
@@ -103,6 +106,8 @@ public class ReservationService {
             userRepository.save(user);
             seatRepository.save(seat);
 
+            broadcastSeatStatusJson(seat);
+
             return seat;
         }catch (InterruptedException e) {
             throw new CustomException(ErrorCode.LOCK_ACQUISITION_FAILED, HttpStatus.BAD_REQUEST);
@@ -128,6 +133,8 @@ public class ReservationService {
 
                 seatRepository.save(seat);
                 userRepository.save(user);
+
+                broadcastSeatStatusJson(seat);
             } else {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_USER, HttpStatus.BAD_REQUEST);
             }
@@ -136,6 +143,15 @@ public class ReservationService {
         }
 
         return seat;
+    }
+
+    private void broadcastSeatStatusJson(Seat seat) {
+        try {
+            String seatStatusJson = "{\"seatNo\": " + seat.getSeatNo() + ", \"status\": " + seat.getStatus() + "}";
+            reservationWebSocketHandler.broadcastSeatStatus(seatStatusJson);
+        }catch (IOException e){
+            throw new CustomException(ErrorCode.SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     
 }
