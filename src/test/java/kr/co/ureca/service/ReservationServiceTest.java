@@ -22,6 +22,7 @@ import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -151,5 +152,19 @@ public class ReservationServiceTest {
 
         verify(mockSeatRepository, times(1)).findBySeatNo(eq(1L));
         verify(mockSeatRepository, times(1)).save(deletedSeat);
+    }
+
+    @Test
+    @DisplayName("나의 예약에서 예약 정보가 없을시 null 반환")
+    void getMyReservation() {
+        //Given
+        User user = User.builder().userId(1L).nickname("userNickname").userName("userName").hasReservation(false).build();
+        Seat seat = Seat.builder().seatNo(1L).status(false).build();
+        when(mockUserRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(mockSeatRepository.findSeatByUser(user)).thenReturn(Optional.empty());
+        //When
+        Long seatNo = reservationService.getMyReservation(1L);
+        //Then
+        assertNull(seatNo);
     }
 }
