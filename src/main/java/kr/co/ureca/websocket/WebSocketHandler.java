@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
-public class ReservationWebSocketHandler extends TextWebSocketHandler {
+public class WebSocketHandler extends TextWebSocketHandler {
     /**
      * 여러 클라이언트와의 연결을 유지하기 위해 CopyOnWriteArraySet 을 사용하여 연결된 세션을 관리
      */

@@ -2,11 +2,7 @@ package kr.co.ureca.service;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PessimisticLockException;
 import jakarta.transaction.Transactional;
-import kr.co.ureca.config.RedissonConfig;
-import kr.co.ureca.dto.DeleteReservationRequest;
-import kr.co.ureca.dto.ReservationRequest;
 import kr.co.ureca.dto.SeatResponse;
 import kr.co.ureca.entity.Seat;
 import kr.co.ureca.entity.User;
@@ -14,19 +10,18 @@ import kr.co.ureca.exception.CustomException;
 import kr.co.ureca.exception.ErrorCode;
 import kr.co.ureca.repository.SeatRepository;
 import kr.co.ureca.repository.UserRepository;
-import kr.co.ureca.websocket.ReservationWebSocketHandler;
+import kr.co.ureca.sse.SseHandler;
+import kr.co.ureca.websocket.WebSocketHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -37,7 +32,8 @@ public class ReservationService {
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
     private final RedissonClient redissonClient;
-    private final ReservationWebSocketHandler reservationWebSocketHandler;
+    private final WebSocketHandler webSocketHandler;
+    private final SseHandler sseHandler;
 
     @PostConstruct
     public void initSeats() {
@@ -106,7 +102,7 @@ public class ReservationService {
             userRepository.save(user);
             seatRepository.save(seat);
 
-            broadcastSeatStatusJson(seat);
+            streamSeatStatus(seat);
 
             return seat;
         }catch (InterruptedException e) {
@@ -134,7 +130,7 @@ public class ReservationService {
                 seatRepository.save(seat);
                 userRepository.save(user);
 
-                broadcastSeatStatusJson(seat);
+                streamSeatStatus(seat);
             } else {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_USER, HttpStatus.BAD_REQUEST);
             }
@@ -145,13 +141,15 @@ public class ReservationService {
         return seat;
     }
 
-    private void broadcastSeatStatusJson(Seat seat) {
+    public void streamSeatStatus(Seat seat){
+        String seatStatusJson = "{\"seatNo\": " + seat.getSeatNo() + ", \"status\": " + seat.getStatus() + "}";
         try {
-            String seatStatusJson = "{\"seatNo\": " + seat.getSeatNo() + ", \"status\": " + seat.getStatus() + "}";
-            reservationWebSocketHandler.broadcastSeatStatus(seatStatusJson);
+            webSocketHandler.broadcastSeatStatus(seatStatusJson);
         }catch (IOException e){
             throw new CustomException(ErrorCode.SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        sseHandler.sendSeatStatusBySse(seatStatusJson);
     }
+
     
 }
