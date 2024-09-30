@@ -8,14 +8,12 @@ import kr.co.ureca.exception.CustomException;
 import kr.co.ureca.exception.ErrorCode;
 import kr.co.ureca.repository.SeatRepository;
 import kr.co.ureca.repository.UserRepository;
+import kr.co.ureca.sse.SseService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -50,17 +48,24 @@ public class ReservationServiceTest {
     private RedissonClient mockRedissonClient;
 
     @Mock
-    private RLock mockRLock; // RLock 모킹 추가
+    private RLock mockRLock;
+
+    @Mock
+    private SseService mockSseService;
 
     @Captor
     private ArgumentCaptor<User> userCaptor;
 
     @BeforeEach
     void setUp() throws InterruptedException {
+        MockitoAnnotations.openMocks(this);
+        reservationService = new ReservationService(mockSeatRepository, mockUserRepository, mockRedissonClient, mockSseService);
+
         // 불필요한 모킹도 허용
         lenient().when(mockRedissonClient.getLock(anyString())).thenReturn(mockRLock);
 
         lenient().when(mockRLock.tryLock(anyLong(), anyLong(), any(TimeUnit.class))).thenReturn(true);
+
     }
 
     @Test
@@ -83,6 +88,8 @@ public class ReservationServiceTest {
 
         when(mockSeatRepository.findBySeatNo(1L)).thenReturn(Optional.of(seat));
         when(mockUserRepository.findById(1L)).thenReturn(Optional.of(user));
+        doNothing().when(mockSseService).broadcastSeatStatusBySse(anyString());
+
 
         //when
         Seat reservedSeat = reservationService.reserve(1L,1L);
@@ -138,6 +145,7 @@ public class ReservationServiceTest {
 
         when(mockSeatRepository.findBySeatNo(eq(1L))).thenReturn(Optional.of(seat));
         when(mockUserRepository.findById(1L)).thenReturn(Optional.of(user));
+        doNothing().when(mockSseService).broadcastSeatStatusBySse(anyString());
 
         // When
         Seat deletedSeat = reservationService.deleteReservation(1L,1L);
