@@ -27,7 +27,6 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 @Slf4j
 public class ReservationService {
 
@@ -72,6 +71,7 @@ public class ReservationService {
                 .orElse(null);
     }
 
+    @Transactional
     public Seat reserve(Long seatNo,Long userId) {
         //좌석 번호를 기준으로 락 설정
         RLock lock = redissonClient.getLock("seatLock:" + seatNo);
