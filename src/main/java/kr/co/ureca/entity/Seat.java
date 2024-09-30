@@ -23,7 +23,7 @@ public class Seat {
     @Builder.Default
     private Boolean status = false;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 

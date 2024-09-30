@@ -1,5 +1,6 @@
 package kr.co.ureca.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -10,7 +11,7 @@ import kr.co.ureca.exception.CustomException;
 import kr.co.ureca.exception.ErrorCode;
 import kr.co.ureca.repository.SeatRepository;
 import kr.co.ureca.repository.UserRepository;
-import kr.co.ureca.sse.SseHandler;
+import kr.co.ureca.sse.SseService;
 import kr.co.ureca.websocket.WebSocketHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,14 +27,15 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 @Slf4j
 public class ReservationService {
 
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
     private final RedissonClient redissonClient;
-    private final WebSocketHandler webSocketHandler;
-    private final SseHandler sseHandler;
+//    private final WebSocketHandler webSocketHandler;
+    private final SseService sseService;
 
     @PostConstruct
     public void initSeats() {
@@ -70,7 +72,6 @@ public class ReservationService {
                 .orElse(null);
     }
 
-    @Transactional
     public Seat reserve(Long seatNo,Long userId) {
         //좌석 번호를 기준으로 락 설정
         RLock lock = redissonClient.getLock("seatLock:" + seatNo);
@@ -103,6 +104,7 @@ public class ReservationService {
             seatRepository.save(seat);
 
             streamSeatStatus(seat);
+            log.info("User in Seat after saving: {}", seat.getUser().getUserName());
 
             return seat;
         }catch (InterruptedException e) {
@@ -115,7 +117,6 @@ public class ReservationService {
 
     }
 
-    @Transactional
     public Seat deleteReservation(Long seatNo,Long userId){
         Seat seat = seatRepository.findBySeatNo(seatNo)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 좌석입니다. 좌석번호: " + seatNo));
@@ -141,14 +142,22 @@ public class ReservationService {
         return seat;
     }
 
-    public void streamSeatStatus(Seat seat){
-        String seatStatusJson = "{\"seatNo\": " + seat.getSeatNo() + ", \"status\": " + seat.getStatus() + "}";
+    public void streamSeatStatus(Seat seat) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        SeatResponse.SeatResponseBuilder seatResponseBuilder = SeatResponse.builder()
+                .seatNo(seat.getSeatNo())
+                .status(seat.getStatus());
+        if (seat.getUser()!=null){
+            seatResponseBuilder.userName(seat.getUser().getUserName());
+        }
+        SeatResponse seatResponse = seatResponseBuilder.build();
+
         try {
-            webSocketHandler.broadcastSeatStatus(seatStatusJson);
-        }catch (IOException e){
+            String seatStatusJson = objectMapper.writeValueAsString(seatResponse);
+            sseService.broadcastSeatStatusBySse(seatStatusJson);
+        } catch (IOException e) {
             throw new CustomException(ErrorCode.SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        sseHandler.sendSeatStatusBySse(seatStatusJson);
     }
 
     
