@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: Mini-Project_BE
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ureca
+    username: root
+    password: 1111
+  jpa:
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+    hibernate:
+      ddl-auto: create
+  redis:
+    data:
+      host: localhost
+      port: 6379
+
+server:
+  port: 8080
+
