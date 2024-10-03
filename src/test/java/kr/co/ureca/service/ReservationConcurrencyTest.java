@@ -2,8 +2,12 @@ package kr.co.ureca.service;
 
 
 import kr.co.ureca.entity.Seat;
+import kr.co.ureca.entity.User;
 import kr.co.ureca.exception.CustomException;
+import kr.co.ureca.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +27,24 @@ public class ReservationConcurrencyTest {
 
     @Autowired
     private ReservationService reservationService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @BeforeEach
+    public void setup() {
+        if (userRepository.count() == 0) {
+            for (long i = 1; i <= 10; i++) {
+                User user = User.builder()
+                        .userName("User" + i)
+                        .password("password" + i)
+                        .nickname("nickname" + i)
+                        .hasReservation(false)
+                        .build();
+                userRepository.save(user);
+            }
+        }
+    }
 
     @Test
     public void testConcurrentReservations() throws InterruptedException, ExecutionException {

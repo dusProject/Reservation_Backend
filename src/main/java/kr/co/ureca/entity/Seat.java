@@ -23,10 +23,20 @@ public class Seat {
     @Builder.Default
     private Boolean status = false;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
     private Long seatNo;
+
+    public void reserveSeat(User user) {
+        this.user = user;
+        this.status = true;
+    }
+
+    public void cancelSeatReservation() {
+        this.user = null;
+        this.status = false;
+    }
 
 }
